@@ -260,7 +260,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         // getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setConfig(savedInstanceState)
-        initDistractionFreeMode(savedInstanceState)
+//        initDistractionFreeMode(savedInstanceState)
 
         setContentView(R.layout.folio_activity)
         this.savedInstanceState = savedInstanceState
@@ -279,7 +279,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
                 .getString(FolioActivity.INTENT_EPUB_SOURCE_PATH)
         }
 
-        initActionBar()
+//        initActionBar()
         initMediaController()
 
         if (ContextCompat.checkSelfPermission(
@@ -566,27 +566,6 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         }
     }
 
-    private fun initDistractionFreeMode(savedInstanceState: Bundle?) {
-        Log.v(LOG_TAG, "-> initDistractionFreeMode")
-
-        window.decorView.setOnSystemUiVisibilityChangeListener(this)
-
-        // Deliberately Hidden and shown to make activity contents lay out behind SystemUI
-        hideSystemUI()
-        showSystemUI()
-
-        distractionFreeMode = savedInstanceState != null && savedInstanceState.getBoolean(BUNDLE_DISTRACTION_FREE_MODE)
-    }
-
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-        Log.v(LOG_TAG, "-> onPostCreate")
-
-        if (distractionFreeMode) {
-            handler!!.post { hideSystemUI() }
-        }
-    }
-
     /**
      * @return returns height of status bar + app bar as requested by param [DisplayUnit]
      */
@@ -705,54 +684,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         }
     }
 
-    override fun toggleSystemUI() {
-
-        if (distractionFreeMode) {
-            showSystemUI()
-        } else {
-            hideSystemUI()
-        }
-    }
-
-    private fun showSystemUI() {
-        Log.v(LOG_TAG, "-> showSystemUI")
-
-        if (Build.VERSION.SDK_INT >= 16) {
-            val decorView = window.decorView
-            decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
-        } else {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-            if (appBarLayout != null)
-                appBarLayout!!.setTopMargin(statusBarHeight)
-            onSystemUiVisibilityChange(View.SYSTEM_UI_FLAG_VISIBLE)
-        }
-    }
-
-    private fun hideSystemUI() {
-        Log.v(LOG_TAG, "-> hideSystemUI")
-
-        if (Build.VERSION.SDK_INT >= 16) {
-            val decorView = window.decorView
-            decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
-                    // Set the content to appear under the system bars so that the
-                    // content doesn't resize when the system bars hide and show.
-                    or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    // Hide the nav bar and status bar
-                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_FULLSCREEN)
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-            )
-            // Specified 1 just to mock anything other than View.SYSTEM_UI_FLAG_VISIBLE
-            onSystemUiVisibilityChange(1)
-        }
-    }
+    override fun toggleSystemUI() {}
 
     override fun getEntryReadLocator(): ReadLocator? {
         if (entryReadLocator != null) {
@@ -1039,7 +971,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     }
 
     override fun getDirection(): Config.Direction {
-        return direction
+        return Config.Direction.HORIZONTAL
     }
 
     private fun clearSearchLocator() {
