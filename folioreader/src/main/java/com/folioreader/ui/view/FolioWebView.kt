@@ -45,7 +45,12 @@ import java.lang.ref.WeakReference
 /**
  * @author by mahavir on 3/31/16.
  */
-class FolioWebView : WebView {
+class FolioWebView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0,
+        defStyleRes: Int = 0
+) : WebView(context, attrs, defStyleAttr, defStyleRes) {
 
     companion object {
 
@@ -224,10 +229,6 @@ class FolioWebView : WebView {
             return false
         }
     }
-
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     private fun init() {
         Log.v(LOG_TAG, "-> init")

@@ -16,7 +16,12 @@ import com.folioreader.Config
 import com.folioreader.R
 import com.folioreader.util.UiUtil
 
-class FolioSearchView : SearchView {
+class FolioSearchView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+    defStyleRes: Int = 0
+) : SearchView(context, attrs, defStyleAttr) {
 
     companion object {
         @JvmField
@@ -24,10 +29,6 @@ class FolioSearchView : SearchView {
     }
 
     private lateinit var searchAutoComplete: SearchView.SearchAutoComplete
-
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     fun init(componentName: ComponentName, config: Config) {
         Log.v(LOG_TAG, "-> init")
