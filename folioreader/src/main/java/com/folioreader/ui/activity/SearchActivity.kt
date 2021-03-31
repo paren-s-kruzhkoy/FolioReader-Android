@@ -54,7 +54,7 @@ class SearchActivity : AppCompatActivity(), OnItemClickListener {
     private var spineSize: Int = 0
     private lateinit var searchUri: Uri
     private lateinit var searchView: FolioSearchView
-    private lateinit var actionBar: ActionBar
+//    private lateinit var actionBar: ActionBar
     private var collapseButtonView: ImageButton? = null
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var searchAdapter: SearchAdapter
@@ -111,11 +111,11 @@ class SearchActivity : AppCompatActivity(), OnItemClickListener {
     private fun init(config: Config) {
         Log.v(LOG_TAG, "-> init")
 
-        setSupportActionBar(toolbar)
-        toolbar.addOnLayoutChangeListener(toolbarOnLayoutChangeListener)
-        actionBar = supportActionBar!!
-        actionBar.setDisplayHomeAsUpEnabled(true)
-        actionBar.setDisplayShowTitleEnabled(false)
+//        setSupportActionBar(toolbar)
+//        toolbar.addOnLayoutChangeListener(toolbarOnLayoutChangeListener)
+//        actionBar = supportActionBar!!
+//        actionBar.setDisplayHomeAsUpEnabled(true)
+//        actionBar.setDisplayShowTitleEnabled(false)
 
         try {
             val fieldCollapseIcon: Field = Toolbar::class.java.getDeclaredField("mCollapseIcon")
@@ -215,91 +215,91 @@ class SearchActivity : AppCompatActivity(), OnItemClickListener {
         Log.v(LOG_TAG, "-> onBackPressed")
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        Log.v(LOG_TAG, "-> onCreateOptionsMenu")
-        menuInflater.inflate(R.menu.menu_search, menu!!)
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        Log.v(LOG_TAG, "-> onCreateOptionsMenu")
+//        menuInflater.inflate(R.menu.menu_search, menu!!)
+//
+//        val config: Config = AppUtil.getSavedConfig(applicationContext)!!
+//        val itemSearch: MenuItem = menu.findItem(R.id.itemSearch)
+//        UiUtil.setColorIntToDrawable(config.themeColor, itemSearch.icon)
+//
+//        searchView = itemSearch.actionView as FolioSearchView
+//        searchView.init(componentName, config)
+//
+//        itemSearch.expandActionView()
+//
+//        if (savedInstanceState != null) {
+//            searchView.setQuery(
+//                savedInstanceState!!.getCharSequence(BUNDLE_SAVE_SEARCH_QUERY),
+//                false
+//            )
+//            softKeyboardVisible = savedInstanceState!!.getBoolean(BUNDLE_IS_SOFT_KEYBOARD_VISIBLE)
+//            if (!softKeyboardVisible)
+//                AppUtil.hideKeyboard(this)
+//        } else {
+//            val searchQuery: CharSequence? = intent.getCharSequenceExtra(BUNDLE_SAVE_SEARCH_QUERY)
+//            if (!TextUtils.isEmpty(searchQuery)) {
+//                searchView.setQuery(searchQuery, false)
+//                AppUtil.hideKeyboard(this)
+//                softKeyboardVisible = false
+//            }
+//        }
+//
+//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                softKeyboardVisible = false
+//                searchView.clearFocus()
+//                return false
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//
+//                if (TextUtils.isEmpty(newText)) {
+//                    Log.v(LOG_TAG, "-> onQueryTextChange -> Empty Query")
+//                    //supportLoaderManager.restartLoader(SEARCH_LOADER, null, this@SearchActivity)
+//                    searchViewModel.cancelAllSearchCalls()
+//                    searchViewModel.init()
+//
+//                    val intent = Intent(FolioActivity.ACTION_SEARCH_CLEAR)
+//                    LocalBroadcastManager.getInstance(this@SearchActivity).sendBroadcast(intent)
+//                }
+//                return false
+//            }
+//        })
+//
+//        itemSearch.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+//
+//            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+//                return true
+//            }
+//
+//            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+//                Log.v(LOG_TAG, "-> onMenuItemActionCollapse")
+//                navigateBack()
+//                return false
+//            }
+//        })
+//
+//        searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
+//            if (hasFocus) softKeyboardVisible = true
+//        }
+//
+//        return true
+//    }
 
-        val config: Config = AppUtil.getSavedConfig(applicationContext)!!
-        val itemSearch: MenuItem = menu.findItem(R.id.itemSearch)
-        UiUtil.setColorIntToDrawable(config.themeColor, itemSearch.icon)
-
-        searchView = itemSearch.actionView as FolioSearchView
-        searchView.init(componentName, config)
-
-        itemSearch.expandActionView()
-
-        if (savedInstanceState != null) {
-            searchView.setQuery(
-                savedInstanceState!!.getCharSequence(BUNDLE_SAVE_SEARCH_QUERY),
-                false
-            )
-            softKeyboardVisible = savedInstanceState!!.getBoolean(BUNDLE_IS_SOFT_KEYBOARD_VISIBLE)
-            if (!softKeyboardVisible)
-                AppUtil.hideKeyboard(this)
-        } else {
-            val searchQuery: CharSequence? = intent.getCharSequenceExtra(BUNDLE_SAVE_SEARCH_QUERY)
-            if (!TextUtils.isEmpty(searchQuery)) {
-                searchView.setQuery(searchQuery, false)
-                AppUtil.hideKeyboard(this)
-                softKeyboardVisible = false
-            }
-        }
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                softKeyboardVisible = false
-                searchView.clearFocus()
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-
-                if (TextUtils.isEmpty(newText)) {
-                    Log.v(LOG_TAG, "-> onQueryTextChange -> Empty Query")
-                    //supportLoaderManager.restartLoader(SEARCH_LOADER, null, this@SearchActivity)
-                    searchViewModel.cancelAllSearchCalls()
-                    searchViewModel.init()
-
-                    val intent = Intent(FolioActivity.ACTION_SEARCH_CLEAR)
-                    LocalBroadcastManager.getInstance(this@SearchActivity).sendBroadcast(intent)
-                }
-                return false
-            }
-        })
-
-        itemSearch.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-
-            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-                return true
-            }
-
-            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                Log.v(LOG_TAG, "-> onMenuItemActionCollapse")
-                navigateBack()
-                return false
-            }
-        })
-
-        searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
-            if (hasFocus) softKeyboardVisible = true
-        }
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-
-        val itemId = item?.itemId
-
-        if (itemId == R.id.itemSearch) {
-            Log.v(LOG_TAG, "-> onOptionsItemSelected -> ${item.title}")
-            //onSearchRequested()
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+//
+//        val itemId = item?.itemId
+//
+//        if (itemId == R.id.itemSearch) {
+//            Log.v(LOG_TAG, "-> onOptionsItemSelected -> ${item.title}")
+//            //onSearchRequested()
+//            return true
+//        }
+//
+//        return super.onOptionsItemSelected(item)
+//    }
 
     override fun onItemClick(
         adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>,

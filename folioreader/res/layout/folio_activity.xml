@@ -5,8 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.folioreader.ui.activity.FolioActivity"
-    tools:menu="@menu/menu_main">
+    tools:context="com.folioreader.ui.activity.FolioActivity">
 
     <com.folioreader.ui.view.DirectionalViewpager
         android:id="@+id/folioPageViewPager"
@@ -26,8 +25,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <com.folioreader.ui.view.CustomToolbar
+            android:id="@+id/customToolbar"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             app:contentInsetLeft="0dp"
