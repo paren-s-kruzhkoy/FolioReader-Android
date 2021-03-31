@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageSwitcher
 import android.widget.ImageView
+import androidx.constraintlayout.widget.Group
 import com.folioreader.R
 
 class CustomToolbar @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null) : FrameLayout(context, attributeSet), View.OnClickListener {
@@ -15,6 +16,23 @@ class CustomToolbar @JvmOverloads constructor(context: Context, attributeSet: At
     private val _config get() = findViewById<ImageView>(R.id.btnConfig)
     private val _search get() = findViewById<ImageView>(R.id.btnSearch)
 
+    private val _searchGroup get() = findViewById<Group>(R.id.searchGroup)
+    private val _defaultGroup get() = findViewById<Group>(R.id.defaultGroup)
+
+    private var _mode: Mode = Mode.DEFAULT
+        set(value) {
+            when(value) {
+                Mode.DEFAULT -> {
+                    _searchGroup.visibility = GONE
+                    _defaultGroup.visibility = VISIBLE
+                }
+                Mode.SEARCH -> {
+                    _searchGroup.visibility = VISIBLE
+                    _defaultGroup.visibility = GONE
+                }
+            }
+            field = value
+        }
     private var _callback: (Int) -> Unit = {}
 
     init {
@@ -38,7 +56,17 @@ class CustomToolbar @JvmOverloads constructor(context: Context, attributeSet: At
         if (_bookmark.nextView.id != R.id.empty) _bookmark.showPrevious()
     }
 
+    fun setMode(mode: Mode) {
+        _mode = mode
+    }
+
     override fun onClick(view: View) {
         _callback(view.id)
+    }
+
+    companion object {
+        enum class Mode {
+            DEFAULT, SEARCH
+        }
     }
 }
