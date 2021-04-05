@@ -38,7 +38,7 @@ class FolioSearchView @JvmOverloads constructor(
         setIconifiedByDefault(false)
 
         adjustLayout()
-        applyTheme(config)
+//        applyTheme(config)
     }
 
     private fun adjustLayout() {

@@ -76,18 +76,17 @@
         android:id="@+id/defaultGroup"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="visible"
         app:constraint_referenced_ids="btnConfig,btnContent,btnSearch,switcherBookmark,btnSearch" />
 
-    <EditText
-        android:id="@+id/serachInput"
+    <com.folioreader.ui.view.FolioSearchView
+        android:id="@+id/search"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnCloseSearch"
         app:layout_constraintStart_toEndOf="@+id/btnBack"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="SomeText" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/btnCloseSearch"
@@ -104,6 +103,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
-        app:constraint_referenced_ids="serachInput,btnCloseSearch" />
+        app:constraint_referenced_ids="search,btnCloseSearch" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,10 +30,16 @@ class CustomToolbar @JvmOverloads constructor(context: Context, attributeSet: At
                     _searchGroup.visibility = VISIBLE
                     _defaultGroup.visibility = GONE
                 }
+                Mode.ONLY_BACK -> {
+                    _searchGroup.visibility = GONE
+                    _defaultGroup.visibility = GONE
+                }
             }
             field = value
         }
     private var _callback: (Int) -> Unit = {}
+
+    val searchView get() = findViewById<FolioSearchView>(R.id.search)
 
     init {
         inflate(context, R.layout.custom_toolbar, this)
@@ -66,7 +72,7 @@ class CustomToolbar @JvmOverloads constructor(context: Context, attributeSet: At
 
     companion object {
         enum class Mode {
-            DEFAULT, SEARCH
+            DEFAULT, SEARCH, ONLY_BACK
         }
     }
 }

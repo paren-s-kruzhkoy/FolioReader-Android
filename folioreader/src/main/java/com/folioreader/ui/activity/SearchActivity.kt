@@ -27,6 +27,7 @@ import com.folioreader.model.locators.SearchLocator
 import com.folioreader.ui.adapter.ListViewType
 import com.folioreader.ui.adapter.OnItemClickListener
 import com.folioreader.ui.adapter.SearchAdapter
+import com.folioreader.ui.view.CustomToolbar
 import com.folioreader.ui.view.FolioSearchView
 import com.folioreader.util.AppUtil
 import com.folioreader.util.UiUtil
@@ -98,14 +99,87 @@ class SearchActivity : AppCompatActivity(), OnItemClickListener {
         Log.v(LOG_TAG, "-> onCreate")
 
         val config: Config = AppUtil.getSavedConfig(this)!!
-        if (config.isNightMode) {
-            setTheme(R.style.FolioNightTheme)
-        } else {
-            setTheme(R.style.FolioDayTheme)
-        }
+//        if (config.isNightMode) {
+//            setTheme(R.style.FolioNightTheme)
+//        } else {
+//            setTheme(R.style.FolioDayTheme)
+//        }
 
         setContentView(R.layout.activity_search)
+
+        initToolbar()
+
         init(config)
+    }
+
+    private fun initToolbar() {
+        var sv: FolioSearchView
+        findViewById<CustomToolbar>(R.id.toolbar).apply {
+            setMode(CustomToolbar.Companion.Mode.SEARCH)
+            sv = searchView
+        }
+
+        val config: Config = AppUtil.getSavedConfig(this)!!
+        sv.init(componentName, config)
+
+//        itemSearch.expandActionView()
+
+        if (savedInstanceState != null) {
+            searchView.setQuery(
+                savedInstanceState!!.getCharSequence(BUNDLE_SAVE_SEARCH_QUERY),
+                false
+            )
+            softKeyboardVisible = savedInstanceState!!.getBoolean(BUNDLE_IS_SOFT_KEYBOARD_VISIBLE)
+            if (!softKeyboardVisible)
+                AppUtil.hideKeyboard(this)
+        } else {
+            val searchQuery: CharSequence? = intent.getCharSequenceExtra(BUNDLE_SAVE_SEARCH_QUERY)
+            if (!TextUtils.isEmpty(searchQuery)) {
+                searchView.setQuery(searchQuery, false)
+                AppUtil.hideKeyboard(this)
+                softKeyboardVisible = false
+            }
+        }
+
+        sv.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                softKeyboardVisible = false
+                sv.clearFocus()
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+                if (TextUtils.isEmpty(newText)) {
+                    Log.v(LOG_TAG, "-> onQueryTextChange -> Empty Query")
+                    //supportLoaderManager.restartLoader(SEARCH_LOADER, null, this@SearchActivity)
+                    searchViewModel.cancelAllSearchCalls()
+                    searchViewModel.init()
+
+                    val intent = Intent(FolioActivity.ACTION_SEARCH_CLEAR)
+                    LocalBroadcastManager.getInstance(this@SearchActivity).sendBroadcast(intent)
+                }
+                return false
+            }
+        })
+
+//        itemSearch.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+//
+//            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+//                return true
+//            }
+//
+//            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+//                Log.v(LOG_TAG, "-> onMenuItemActionCollapse")
+//                navigateBack()
+//                return false
+//            }
+//        })
+
+        sv.setOnQueryTextFocusChangeListener { _, hasFocus ->
+            if (hasFocus) softKeyboardVisible = true
+        }
     }
 
     private fun init(config: Config) {

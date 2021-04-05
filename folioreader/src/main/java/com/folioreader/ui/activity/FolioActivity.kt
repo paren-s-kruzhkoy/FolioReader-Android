@@ -258,7 +258,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         // getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setConfig(savedInstanceState)
-        initDistractionFreeMode(savedInstanceState)
+//        initDistractionFreeMode(savedInstanceState)
 
         setContentView(R.layout.folio_activity)
         this.savedInstanceState = savedInstanceState
@@ -323,7 +323,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
                 }
             }
         }
-//        appBarLayout = findViewById(R.id.appBarLayout)
+        appBarLayout = findViewById(R.id.appBarLayout)
 //        toolbar = findViewById(R.id.toolbar)
 //        setSupportActionBar(toolbar)
 //        actionBar = supportActionBar
@@ -446,7 +446,6 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         intent.putExtra(Constants.BOOK_TITLE, bookFileName)
 
         startActivityForResult(intent, RequestCode.CONTENT_HIGHLIGHT.value)
-//        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up)
     }
 
     fun showConfigBottomSheetDialogFragment() {
@@ -586,24 +585,24 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     }
 
     private fun initDistractionFreeMode(savedInstanceState: Bundle?) {
-        Log.v(LOG_TAG, "-> initDistractionFreeMode")
-
-        window.decorView.setOnSystemUiVisibilityChangeListener(this)
-
-        // Deliberately Hidden and shown to make activity contents lay out behind SystemUI
-        hideSystemUI()
-        showSystemUI()
-
-        distractionFreeMode = savedInstanceState != null && savedInstanceState.getBoolean(BUNDLE_DISTRACTION_FREE_MODE)
+//        Log.v(LOG_TAG, "-> initDistractionFreeMode")
+//
+//        window.decorView.setOnSystemUiVisibilityChangeListener(this)
+//
+//        // Deliberately Hidden and shown to make activity contents lay out behind SystemUI
+//        hideSystemUI()
+//        showSystemUI()
+//
+//        distractionFreeMode = savedInstanceState != null && savedInstanceState.getBoolean(BUNDLE_DISTRACTION_FREE_MODE)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         Log.v(LOG_TAG, "-> onPostCreate")
 
-        if (distractionFreeMode) {
-            handler!!.post { hideSystemUI() }
-        }
+//        if (distractionFreeMode) {
+//            handler!!.post { hideSystemUI() }
+//        }
     }
 
     /**
@@ -614,8 +613,8 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         var topDistraction = 0
         if (!distractionFreeMode) {
             topDistraction = statusBarHeight
-            if (customToolbar != null)
-                topDistraction += customToolbar.height
+            topDistraction += customToolbar.height
+
         }
 
         when (unit) {
@@ -663,11 +662,10 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
      * 3. In tablets, navigation bar is always placed at bottom of the screen.
      */
     private fun computeViewportRect(): Rect {
-        //Log.v(LOG_TAG, "-> computeViewportRect");
+        Log.v(LOG_TAG, "-> computeViewportRect");
 
         val viewportRect = Rect(appBarLayout!!.insets)
-        if (distractionFreeMode)
-            viewportRect.left = 0
+        if (distractionFreeMode) viewportRect.left = 0
         viewportRect.top = getTopDistraction(DisplayUnit.PX)
         if (distractionFreeMode) {
             viewportRect.right = displayMetrics!!.widthPixels
@@ -715,62 +713,59 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         distractionFreeMode = visibility != View.SYSTEM_UI_FLAG_VISIBLE
         Log.v(LOG_TAG, "-> distractionFreeMode = $distractionFreeMode")
 
-        if (customToolbar != null) {
-            if (distractionFreeMode) {
-                customToolbar.visibility = View.GONE
-            } else {
-                customToolbar.visibility = View.VISIBLE
-            }
+        if (distractionFreeMode) {
+            customToolbar.visibility = View.GONE
+        } else {
+            customToolbar.visibility = View.VISIBLE
         }
     }
 
     override fun toggleSystemUI() {
-
-        if (distractionFreeMode) {
-            showSystemUI()
-        } else {
-            hideSystemUI()
-        }
+//        if (distractionFreeMode) {
+//            showSystemUI()
+//        } else {
+//            hideSystemUI()
+//        }
     }
 
     private fun showSystemUI() {
-        Log.v(LOG_TAG, "-> showSystemUI")
-
-        if (Build.VERSION.SDK_INT >= 16) {
-            val decorView = window.decorView
-            decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
-        } else {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-            if (appBarLayout != null)
-                appBarLayout!!.setTopMargin(statusBarHeight)
-            onSystemUiVisibilityChange(View.SYSTEM_UI_FLAG_VISIBLE)
-        }
+//        Log.v(LOG_TAG, "-> showSystemUI")
+//
+//        if (Build.VERSION.SDK_INT >= 16) {
+//            val decorView = window.decorView
+//            decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+//        } else {
+//            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+//            if (appBarLayout != null)
+//                appBarLayout!!.setTopMargin(statusBarHeight)
+//            onSystemUiVisibilityChange(View.SYSTEM_UI_FLAG_VISIBLE)
+//        }
     }
 
     private fun hideSystemUI() {
-        Log.v(LOG_TAG, "-> hideSystemUI")
-
-        if (Build.VERSION.SDK_INT >= 16) {
-            val decorView = window.decorView
-            decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
-                    // Set the content to appear under the system bars so that the
-                    // content doesn't resize when the system bars hide and show.
-                    or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    // Hide the nav bar and status bar
-                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_FULLSCREEN)
-        } else {
-            window.setFlags(
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-            )
-            // Specified 1 just to mock anything other than View.SYSTEM_UI_FLAG_VISIBLE
-            onSystemUiVisibilityChange(1)
-        }
+//        Log.v(LOG_TAG, "-> hideSystemUI")
+//
+//        if (Build.VERSION.SDK_INT >= 16) {
+//            val decorView = window.decorView
+//            decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
+//                    // Set the content to appear under the system bars so that the
+//                    // content doesn't resize when the system bars hide and show.
+//                    or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                    // Hide the nav bar and status bar
+//                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                    or View.SYSTEM_UI_FLAG_FULLSCREEN)
+//        } else {
+//            window.setFlags(
+//                    WindowManager.LayoutParams.FLAG_FULLSCREEN or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+//                    WindowManager.LayoutParams.FLAG_FULLSCREEN or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+//            )
+//            // Specified 1 just to mock anything other than View.SYSTEM_UI_FLAG_VISIBLE
+//            onSystemUiVisibilityChange(1)
+//        }
     }
 
     override fun getEntryReadLocator(): ReadLocator? {
@@ -871,6 +866,13 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     }
 
     private fun configFolio() {
+        val customSeekBar = findViewById<CustomHorizontalSeekBarView>(R.id.customSeekBar)
+
+        customSeekBar.totalCount = spine!!.size
+        customSeekBar.currentPage = 1
+        customSeekBar.setGoToPageCallback {
+            goToChapter(spine!![it].href!!)
+        }
 
         mFolioPageViewPager = findViewById(R.id.folioPageViewPager)
         // Replacing with addOnPageChangeListener(), onPageSelected() is not invoked
@@ -887,6 +889,8 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
                 )
                 mediaControllerFragment!!.setPlayButtonDrawable()
                 currentChapterIndex = position
+
+                customSeekBar.currentPage = position + 1
             }
 
             override fun onPageScrollStateChanged(state: Int) {
