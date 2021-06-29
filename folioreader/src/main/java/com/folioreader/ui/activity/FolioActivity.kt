@@ -866,13 +866,13 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     }
 
     private fun configFolio() {
-        val customSeekBar = findViewById<CustomHorizontalSeekBarView>(R.id.customSeekBar)
+//        val customSeekBar = findViewById<CustomHorizontalSeekBarView>(R.id.customSeekBar)
 
-        customSeekBar.totalCount = spine!!.size
-        customSeekBar.currentPage = 1
-        customSeekBar.setGoToPageCallback {
-            goToChapter(spine!![it].href!!)
-        }
+//        customSeekBar.totalCount = spine!!.size
+//        customSeekBar.currentPage = 1
+//        customSeekBar.setGoToPageCallback {
+//            goToChapter(spine!![it].href!!)
+//        }
 
         mFolioPageViewPager = findViewById(R.id.folioPageViewPager)
         // Replacing with addOnPageChangeListener(), onPageSelected() is not invoked
@@ -890,7 +890,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
                 mediaControllerFragment!!.setPlayButtonDrawable()
                 currentChapterIndex = position
 
-                customSeekBar.currentPage = position + 1
+//                customSeekBar.currentPage = position + 1
             }
 
             override fun onPageScrollStateChanged(state: Int) {

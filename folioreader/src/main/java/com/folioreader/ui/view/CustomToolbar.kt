@@ -43,11 +43,11 @@ class CustomToolbar @JvmOverloads constructor(context: Context, attributeSet: At
 
     init {
         inflate(context, R.layout.custom_toolbar, this)
-        _back.setOnClickListener(this)
-        _content.setOnClickListener(this)
-        _bookmark.setOnClickListener(this)
-        _config.setOnClickListener(this)
-        _search.setOnClickListener(this)
+//        _back.setOnClickListener(this)
+//        _content.setOnClickListener(this)
+//        _bookmark.setOnClickListener(this)
+//        _config.setOnClickListener(this)
+//        _search.setOnClickListener(this)
     }
 
     fun setButtonsClickListener(callback: (viewId: Int) -> Unit) {
